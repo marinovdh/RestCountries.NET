@@ -56,7 +56,7 @@ jobs:
         run: dotnet build ./src/Api -c Release
 
       - name: dotnet publish
-        run: dotnet publish ./src/Api -c Release -o ${{env.AZURE_WEBAPP_PACKAGE_PATH}}
+        run: dotnet publish ./src/Api -c Release -r linux-x64 -o ${{env.AZURE_WEBAPP_PACKAGE_PATH}}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
