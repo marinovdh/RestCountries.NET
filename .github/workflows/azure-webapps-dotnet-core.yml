@@ -63,7 +63,13 @@ jobs:
         with:
           name: .net-app
           path: ${{env.AZURE_WEBAPP_PACKAGE_PATH}}
-
+          
+      - name: Publish Artifacts
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: webapp
+          path: ${{env.AZURE_WEBAPP_PACKAGE_PATH}}
+          
   deploy:
     permissions:
       contents: none
