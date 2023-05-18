@@ -39,6 +39,7 @@ if (app.Environment.IsDevelopment())
     {
         options.SwaggerEndpoint("/swagger/v3.1/swagger.json", "v3.1");
         options.RoutePrefix = string.Empty;
+        options.InjectJavascript("/swagger/custom.js");
     });
 }
 
