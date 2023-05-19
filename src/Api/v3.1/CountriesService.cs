@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Linq.Expressions;
+using System.Text.Json;
 
 namespace Capella.RestCountries.Api.V31
 {
@@ -113,6 +114,16 @@ namespace Capella.RestCountries.Api.V31
                             || codeList.Contains(x.ccn3)
                             || codeList.Contains(x.cioc.ToUpperInvariant()))
                 .ToList();
+        }
+
+        /// <summary>
+        /// Generic search the country list.
+        /// </summary>
+        /// <param name="expr">A generic expression to search the list of countries with.</param>
+        /// <returns>The country objects that were found found, or an empty list.</returns>
+        public List<Country> GetCountriesByExpression(Func<Country, bool> expr)
+        {
+            return _allCountries.Where(expr).ToList();
         }
 
         private List<Country> LoadCountries()

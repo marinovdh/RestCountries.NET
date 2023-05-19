@@ -83,5 +83,47 @@ namespace Capella.RestCountries.Api.V31
             var countries = countriesService.GetCountriesByAlphaCodeList(codes);
             return new JsonResult(countries);
         }
+
+        /// <summary>
+        /// Search by capital city.
+        /// </summary>
+        /// <param name="capital">The (part of the) capital name to search for.</param>
+        /// <returns>The found country objects, or 404 status with error message if not found.</returns>
+        [HttpGet]
+        [Route("capital")]
+        public ActionResult FindCountriesByCapital(string capital)
+        {
+            var countries = countriesService.GetCountriesByExpression(c =>
+                c.capital.Any(ca => ca.ToUpperInvariant().Contains(capital.ToUpperInvariant())));
+            return new JsonResult(countries);
+        }
+
+        /// <summary>
+        /// Search by region.
+        /// </summary>
+        /// <param name="region">The region name to search for.</param>
+        /// <returns>The found country objects, or 404 status with error message if not found.</returns>
+        [HttpGet]
+        [Route("region")]
+        public ActionResult FindCountriesByRegion(string region)
+        {
+            var countries = countriesService.GetCountriesByExpression(c =>
+                string.Equals(c.region, region, StringComparison.InvariantCultureIgnoreCase));
+            return new JsonResult(countries);
+        }
+
+        /// <summary>
+        /// Search by subregion.
+        /// </summary>
+        /// <param name="subregion">The subregion name to search for.</param>
+        /// <returns>The found country objects, or 404 status with error message if not found.</returns>
+        [HttpGet]
+        [Route("subregion")]
+        public ActionResult FindCountriesBySubregion(string subregion)
+        {
+            var countries = countriesService.GetCountriesByExpression(c =>
+                string.Equals(c.subregion, subregion, StringComparison.InvariantCultureIgnoreCase));
+            return new JsonResult(countries);
+        }
     }
 }
