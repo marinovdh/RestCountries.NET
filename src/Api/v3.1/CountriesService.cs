@@ -20,7 +20,7 @@ namespace Capella.RestCountries.Api.V31
         }
 
         /// <summary>
-        /// Get all available countries.
+        /// Get all available countries, ordered by the 3-letter code (CCA3).
         /// </summary>
         public List<Country> GetCountries()
         {
@@ -31,18 +31,18 @@ namespace Capella.RestCountries.Api.V31
         /// Gets a country by name. This should be either the common or official name, or the 
         /// native common or official name.
         /// </summary>
-        public object? GetCountryByName(string value)
+        public Country? GetCountryByName(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
                 return null!;
             }
-            
+
             value = value.Replace(' ', '-');
             var country = _allCountries
                 .FirstOrDefault(x => string.Equals(x.name.common.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase)
                     || string.Equals(x.name.official.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase));
-            
+
             if (country == null)
             {
                 country = _allCountries
@@ -50,15 +50,40 @@ namespace Capella.RestCountries.Api.V31
                     string.Equals(n.Value.common.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase)
                     || string.Equals(n.Value.official.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase)));
             }
-            
+
             return country;
+        }
+
+        /// <summary>
+        /// Gets a single country by searching for ISO 3166-1 2-letter or 3-letter country code.
+        /// </summary>
+        /// <param name="value">The ISO 3166-1 2-letter or 3-letter country code.</param>
+        /// <returns>The country object, or 404 status with error message if not found.</returns>
+        public Country? GetCountryByAlphaCode(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            { 
+                return null!; 
+            }
+
+            if (value.Length == 2)
+            {
+                return _allCountries.SingleOrDefault(x => string.Equals(x.cca2, value, StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            if (value.Length == 3)
+            {
+                return _allCountries.SingleOrDefault(x => string.Equals(x.cca3, value, StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            return null;
         }
 
         private List<Country> LoadCountries()
         {
             string fileName = "App_Data/countriesV3.1.json";
             string jsonString = File.ReadAllText(fileName);
-            
+
             var countries = JsonSerializer.Deserialize<List<Country>>(jsonString);
 
             return countries!;
