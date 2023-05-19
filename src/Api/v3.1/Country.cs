@@ -1,4 +1,6 @@
-﻿namespace Capella.RestCountries.Api.V31;
+﻿using System.Text.Json.Serialization;
+
+namespace Capella.RestCountries.Api.V31;
 
 public class Country
 {
@@ -9,7 +11,7 @@ public class Country
     public string cca3 { get; set; }
     public string cioc { get; set; }
     public bool? independent { get; set; }
-    public string Status { get; set; }
+    public string status { get; set; }
     public bool UnMember { get; set; }
     public Dictionary<string, Currency> currencies { get; set; }
     public Idd idd { get; set; }
@@ -17,23 +19,23 @@ public class Country
     public string[] altSpellings { get; set; }
     public string region { get; set; }
     public string subregion { get; set; }
-    public Languages languages { get; set; }
-    public Translations translations { get; set; }
-    public float[] latlng { get; set; }
+    public Dictionary<string, string> languages { get; set; }
+    public Dictionary<string, Name> translations { get; set; }
+    public decimal[] latlng { get; set; }
     public bool landlocked { get; set; }
     public string[] borders { get; set; }
     public float area { get; set; }
-    public Demonyms demonyms { get; set; }
+    public Dictionary<string, Demonym> demonyms { get; set; }
     public string flag { get; set; }
     public Maps maps { get; set; }
     public int population { get; set; }
-    public Gini gini { get; set; }
+    public object gini { get; set; }
     public string fifa { get; set; }
     public Car car { get; set; }
     public string[] timezones { get; set; }
     public string[] continents { get; set; }
     public Flags flags { get; set; }
-    public Coatofarms coatOfArms { get; set; }
+    public CoatOfArms coatOfArms { get; set; }
     public string startOfWeek { get; set; }
     public Capitalinfo capitalInfo { get; set; }
     public Postalcode postalCode { get; set; }
@@ -41,13 +43,13 @@ public class Country
 
 public class ExtendedName : Name
 {
-    public Dictionary<string, Name> nativeName { get; set; }
+    [JsonPropertyOrder(3)] public Dictionary<string, Name> nativeName { get; set; }
 }
 
 public class Name
 {
-    public string official { get; set; }
-    public string common { get; set; }
+    [JsonPropertyOrder(1)] public string common { get; set; }
+    [JsonPropertyOrder(2)] public string official { get; set; }
 }
 
 public class Currency
@@ -62,203 +64,7 @@ public class Idd
     public string[] suffixes { get; set; }
 }
 
-public class Languages
-{
-    public string est { get; set; }
-}
-
-public class Translations
-{
-    public Ara ara { get; set; }
-    public Bre bre { get; set; }
-    public Ces ces { get; set; }
-    public Cym cym { get; set; }
-    public Deu deu { get; set; }
-    public Est1 est { get; set; }
-    public Fin fin { get; set; }
-    public Fra fra { get; set; }
-    public Hrv hrv { get; set; }
-    public Hun hun { get; set; }
-    public Ita ita { get; set; }
-    public Jpn jpn { get; set; }
-    public Kor kor { get; set; }
-    public Nld nld { get; set; }
-    public Per per { get; set; }
-    public Pol pol { get; set; }
-    public Por por { get; set; }
-    public Rus rus { get; set; }
-    public Slk slk { get; set; }
-    public Spa spa { get; set; }
-    public Srp srp { get; set; }
-    public Swe swe { get; set; }
-    public Tur tur { get; set; }
-    public Urd urd { get; set; }
-    public Zho zho { get; set; }
-}
-
-public class Ara
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Bre
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Ces
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Cym
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Deu
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Est1
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Fin
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Fra
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Hrv
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Hun
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Ita
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Jpn
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Kor
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Nld
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Per
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Pol
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Por
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Rus
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Slk
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Spa
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Srp
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Swe
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Tur
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Urd
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Zho
-{
-    public string official { get; set; }
-    public string common { get; set; }
-}
-
-public class Demonyms
-{
-    public Eng eng { get; set; }
-    public Fra1 fra { get; set; }
-}
-
-public class Eng
-{
-    public string f { get; set; }
-    public string m { get; set; }
-}
-
-public class Fra1
+public class Demonym
 {
     public string f { get; set; }
     public string m { get; set; }
@@ -272,7 +78,7 @@ public class Maps
 
 public class Gini
 {
-    public float _2018 { get; set; }
+    public int _2018 { get; set; }
 }
 
 public class Car
@@ -288,7 +94,7 @@ public class Flags
     public string alt { get; set; }
 }
 
-public class Coatofarms
+public class CoatOfArms
 {
     public string png { get; set; }
     public string svg { get; set; }
