@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
 using Capella.RestCountries.Api.V31;
 using Microsoft.OpenApi.Models;
@@ -27,6 +28,10 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://github.com/marinovdh/RestCountries.NET")
         }
     });
+
+    var xmlDocFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlDocFullPath = Path.Combine(AppContext.BaseDirectory, xmlDocFile);
+    options.IncludeXmlComments(xmlDocFullPath);
 });
 
 var app = builder.Build();

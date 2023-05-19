@@ -2,10 +2,16 @@
 
 namespace Capella.RestCountries.Api.V31
 {
+    /// <summary>
+    /// Service to get country objects.
+    /// </summary>
     public class CountriesService
     {
         private static List<Country> _allCountries = null!;
 
+        /// <summary>
+        /// ctor for <see cref="CountriesService"/>
+        /// </summary>
         public CountriesService()
         {
             _allCountries = LoadCountries()
@@ -13,12 +19,19 @@ namespace Capella.RestCountries.Api.V31
                 .ToList();
         }
 
+        /// <summary>
+        /// Get all available countries.
+        /// </summary>
         public List<Country> GetCountries()
         {
             return _allCountries;
         }
 
-        internal object GetCountryByName(string value)
+        /// <summary>
+        /// Gets a country by name. This should be either the common or official name, or the 
+        /// native common or official name.
+        /// </summary>
+        public object? GetCountryByName(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -33,7 +46,9 @@ namespace Capella.RestCountries.Api.V31
             if (country == null)
             {
                 country = _allCountries
-                    .FirstOrDefault(x => x.name.nativeName.Any(n => string.Equals(n.Value.common.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase)));
+                    .FirstOrDefault(x => x.name.nativeName.Any(n =>
+                    string.Equals(n.Value.common.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase)
+                    || string.Equals(n.Value.official.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase)));
             }
             
             return country;
