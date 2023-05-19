@@ -70,5 +70,18 @@ namespace Capella.RestCountries.Api.V31
 
             return CountryNotFound;
         }
+
+        /// <summary>
+        /// Search by list of ISO 3166-1 2-letter (CCA2), 3-letter (CCA3), 3-digit CCN3 or Olympic Comitee (CIOC) country code.
+        /// </summary>
+        /// <param name="codes">The ISO 3166-1 2-letter or 3-letter country codes, separated by semi-colon or comma.</param>
+        /// <returns>The country object, or 404 status with error message if not found.</returns>
+        [HttpGet]
+        [Route("alpha")]
+        public ActionResult FindCountriesByAlphaCodes(string codes)
+        {
+            var countries = countriesService.GetCountriesByAlphaCodeList(codes);
+            return new JsonResult(countries);
+        }
     }
 }
