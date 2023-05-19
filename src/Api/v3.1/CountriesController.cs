@@ -32,6 +32,32 @@ namespace Capella.RestCountries.Api.V31
         }
 
         /// <summary>
+        /// Searches countries by their common or official name, or their native name. All matches will be returned.
+        /// </summary>
+        /// <remarks>
+        /// When requesting a country with blank spaces you should either use <![CDATA[%20]]> or a hyphen. Example: 
+        /// <c>/name/united%20states</c> or <c>/name/united-states</c>.
+        /// </remarks>
+        /// <param name="countryName">The full name of the country to request.</param>
+        /// <param name="fullname">
+        /// Defines whether the search is on the fullname or a part of the name, either <c>true</c> or <c>false</c>. 
+        /// If not defined it will be considered <c>false</c>.
+        /// </param>
+        /// <returns>The country object, or 404 status with error message if not found.</returns>
+        [HttpGet]
+        [Route("name/{countryName}")]
+        public ActionResult SearchCountryByName(string countryName, string fullname = "false")
+        {
+            bool.TryParse(fullname, out bool searchFullName);
+
+            var countries = searchFullName
+                ? countriesService.GetCountryByFullName(countryName)
+                : countriesService.SearchCountryByNamePart(countryName);
+
+            return new JsonResult(countries);
+        }
+
+        /// <summary>
         /// Gets a single country bij its common or official name, or its native name. The first match will be returned.
         /// </summary>
         /// <remarks>
@@ -41,13 +67,14 @@ namespace Capella.RestCountries.Api.V31
         /// <param name="countryName">The full name of the country to request.</param>
         /// <returns>The country object, or 404 status with error message if not found.</returns>
         [HttpGet]
-        [Route("name/{countryName}")]
+        [Route("fullname/{countryName}")]
         public ActionResult GetCountryByName(string countryName)
         {
-            var country = countriesService.GetCountryByName(countryName);
-            if (country != null)
+            var countries = countriesService.GetCountryByFullName(countryName);
+
+            if (countries.Any())
             {
-                return new JsonResult(country);
+                return new JsonResult(countries[0]);
             }
 
             return CountryNotFound;

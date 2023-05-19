@@ -29,30 +29,61 @@ namespace Capella.RestCountries.Api.V31
         }
 
         /// <summary>
-        /// Gets a country by name. This should be either the common or official name, or the 
-        /// native common or official name.
+        /// Gets a country by name. This should be either the common or official name, or the native common 
+        /// or official name. It is supposed to return only 1 country, but the return type is a list though.
         /// </summary>
-        public Country? GetCountryByName(string value)
+        public List<Country> GetCountryByFullName(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
-                return null!;
+                return new List<Country>();
             }
 
             value = value.Replace(' ', '-');
-            var country = _allCountries
-                .FirstOrDefault(x => string.Equals(x.name.common.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase)
-                    || string.Equals(x.name.official.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase));
+            var countries = _allCountries
+                .Where(x => string.Equals(x.name.common.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase)
+                    || string.Equals(x.name.official.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
 
-            if (country == null)
+            if (!countries.Any())
             {
-                country = _allCountries
-                    .FirstOrDefault(x => x.name.nativeName.Any(n =>
+                countries = _allCountries
+                    .Where(x => x.name.nativeName.Any(n =>
                     string.Equals(n.Value.common.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase)
-                    || string.Equals(n.Value.official.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase)));
+                    || string.Equals(n.Value.official.Replace(' ', '-'), value, StringComparison.InvariantCultureIgnoreCase)))
+                    .ToList();
             }
 
-            return country;
+            return countries;
+        }
+
+        /// <summary>
+        /// Searches countries by a given part of the name. This should be either the common or official name, or the native 
+        /// common or official name. It is supposed to return only 1 country, but the return type is a list though.
+        /// </summary>
+        public List<Country> SearchCountryByNamePart(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return new List<Country>();
+            }
+
+            value = value.Replace(' ', '-');
+            var countries = _allCountries
+                .Where(x => x.name.common.Replace(' ', '-').Contains(value, StringComparison.InvariantCultureIgnoreCase)
+                    || x.name.official.Replace(' ', '-').Contains(value, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
+
+            if (!countries.Any())
+            {
+                countries = _allCountries
+                    .Where(x => x.name.nativeName.Any(n =>
+                        n.Value.common.Replace(' ', '-').Contains(value, StringComparison.InvariantCultureIgnoreCase)
+                        || n.Value.official.Replace(' ', '-').Contains(value, StringComparison.InvariantCultureIgnoreCase)))
+                    .ToList();
+            }
+
+            return countries;
         }
 
         /// <summary>
