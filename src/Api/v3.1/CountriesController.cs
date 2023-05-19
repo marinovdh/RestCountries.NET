@@ -126,6 +126,21 @@ namespace Capella.RestCountries.Api.V31
         }
 
         /// <summary>
+        /// Search by currency.
+        /// </summary>
+        /// <param name="currency">The currency to search for.</param>
+        /// <returns>The found country objects, or 404 status with error message if not found.</returns>
+        [HttpGet]
+        [Route("currency")]
+        public ActionResult FindCountriesByCurrency(string currency)
+        {
+            var countries = countriesService.GetCountriesByExpression(c =>
+                c.currencies.Any(cur => cur.Key.Contains(currency, StringComparison.InvariantCultureIgnoreCase)
+                    || string.Equals(cur.Value.name.Replace(" ", "-"), currency.Replace(" ", "-"), StringComparison.InvariantCultureIgnoreCase)));
+            return new JsonResult(countries);
+        }
+
+        /// <summary>
         /// Search by capital city.
         /// </summary>
         /// <param name="status">
@@ -136,12 +151,12 @@ namespace Capella.RestCountries.Api.V31
         [Route("independent")]
         public ActionResult FindCountriesByIndenpendence(string status = "true")
         {
-            if (!bool.TryParse(status, out bool filter))
+            if (!bool.TryParse(status, out bool isIndependent))
             {
-                filter = true;
+                isIndependent = true;
             }
 
-            var countries = countriesService.GetCountriesByExpression(c => c.independent == filter);
+            var countries = countriesService.GetCountriesByExpression(c => c.independent == isIndependent);
             return new JsonResult(countries);
         }
 

@@ -11,7 +11,7 @@ public class Country
     public bool? independent { get; set; }
     public string Status { get; set; }
     public bool UnMember { get; set; }
-    public Currencies currencies { get; set; }
+    public Dictionary<string, Currency> currencies { get; set; }
     public Idd idd { get; set; }
     public string[] capital { get; set; }
     public string[] altSpellings { get; set; }
@@ -48,12 +48,6 @@ public class Name
 {
     public string official { get; set; }
     public string common { get; set; }
-}
-
-public class Currencies
-{
-    public Currency AWG { get; set; }
-    public Currency AFN { get; set; }
 }
 
 public class Currency
