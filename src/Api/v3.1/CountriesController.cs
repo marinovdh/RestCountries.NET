@@ -99,6 +99,26 @@ namespace Capella.RestCountries.Api.V31
         }
 
         /// <summary>
+        /// Search by capital city.
+        /// </summary>
+        /// <param name="status">
+        /// The status of inpendence, either <c>true</c> or <c>false</c>. If not defined it will be considered <c>true</c>.
+        /// </param>
+        /// <returns>The found country objects, or 404 status with error message if not found.</returns>
+        [HttpGet]
+        [Route("independent")]
+        public ActionResult FindCountriesByIndenpendence(string status = "true")
+        {
+            if (!bool.TryParse(status, out bool filter))
+            {
+                filter = true;
+            }
+
+            var countries = countriesService.GetCountriesByExpression(c => c.independent == filter);
+            return new JsonResult(countries);
+        }
+
+        /// <summary>
         /// Search by region.
         /// </summary>
         /// <param name="region">The region name to search for.</param>
