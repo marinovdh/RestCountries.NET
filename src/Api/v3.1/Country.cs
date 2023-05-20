@@ -43,13 +43,13 @@ public class Country : Name
 
 public class ExtendedName : Name
 {
-    [JsonPropertyOrder(3)] public Dictionary<string, Name> nativeName { get; set; }
+    [JsonPropertyOrder(-1)] public Dictionary<string, Name> nativeName { get; set; }
 }
 
 public class Name
 {
-    [JsonPropertyOrder(1)] public string common { get; set; }
-    [JsonPropertyOrder(2)] public string official { get; set; }
+    [JsonPropertyOrder(-3)] public string common { get; set; }
+    [JsonPropertyOrder(-2)] public string official { get; set; }
 }
 
 public class Currency

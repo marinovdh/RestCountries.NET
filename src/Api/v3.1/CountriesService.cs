@@ -163,6 +163,12 @@ namespace Capella.RestCountries.Api.V31
 
             var countries = JsonSerializer.Deserialize<List<Country>>(jsonString);
 
+            foreach (var country in countries)
+            {
+                country.common = country.name.common;
+                country.official = country.name.official;
+            }
+
             return countries!;
         }
     }
