@@ -34,6 +34,8 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(xmlDocFullPath);
 });
 
+builder.Services.AddScoped<CountriesService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

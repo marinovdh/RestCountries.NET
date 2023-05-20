@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Capella.RestCountries.Api.V31
 {
+    [CountryFilter]
     [ApiController]
     [Route("v3.1")]
     public class CountriesController : ControllerBase
@@ -23,12 +24,13 @@ namespace Capella.RestCountries.Api.V31
         /// is ordered by the country's 3-letter code (CCA3).
         /// </summary>
         /// <returns>List with all countries.</returns>
+        [CountryFilter]
         [HttpGet]
         [Route("all")]
-        public IEnumerable<Country> GetAllCountries()
+        public ActionResult GetAllCountries()
         {
             var countries = countriesService.GetCountries();
-            return countries;
+            return new JsonResult(countries);
         }
 
         /// <summary>
